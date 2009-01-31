@@ -29,12 +29,14 @@ end
 
 
 get '/' do
+  @title = "appname"
   haml :index#'%h1 Hello World!'
 end
 get '/find_join/:user1/:user2' do
   x = Twitter::Base.new('testing42', 'testme')
   @shared = x.all_followers_for(params[:user1]).overlap!(x.all_followers_for(params[:user2]))
-  
+  @title = "People who follow " + params[:user1] + " and " + params[:user2]
+ 
   haml :find_join
 
 end
@@ -52,7 +54,6 @@ __END__
 
 
 @@ find_join
-!!!
 %h1 
   People Who Follow Both
   %b
@@ -70,8 +71,8 @@ common followers
 @@ index
 %h1 How do I know you?
 %p
-  Often, someone will follow you on Twitter, and you won't know who they are or how they know you. But with this current-unnmaed app, you can enter your username and theirs, and we tell you what people follow both of you, letting you know which of your friends they know. 
-
+  Often, someone follows you on Twitter, and you don't know who they are or how they know you. But with this currently-unnamed app, you can enter your username and theirs, and we tell you what people follow both of you, letting you know which of your friends they know. 
+  
 %form{:action => '/urlify', :method => 'get'}
   %p
     %label Username 1:
@@ -79,9 +80,17 @@ common followers
   %p
     %label Username 2:
     %input{:type => 'text', :name => 'user2'}
-  %input{:type => 'submit', :value => 'Compare Folllowers'}
+  %input{:type => 'submit', :value => 'Compare Followers'}
 %p
-  %b
+  %strong
     Note:
   I know that this is really slow. It has to talk to Twitter at least twice, which is slow, and then crunch the data, which is slow. It is working, so unless it takes like a minute, have faith and don't try to reload it. You'll just lose your progress. 
 
+@@ layout
+!!!
+%html
+  %head
+    %title
+      = @title || "APPNAME"
+  %body
+    = yield
