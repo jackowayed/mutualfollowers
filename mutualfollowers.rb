@@ -29,12 +29,21 @@ class Array
   end
 end
 
+class TooManyFollowers < ArgumentError; end
+
+error TooManyFollowers do
+  status 406
+  "@#{request.env['sinatra.error'].message} has more than 1000 followers!"
+end
+
 
 get '/' do
   @title = "appname"
   haml :index#'%h1 Hello World!'
 end
 get '/find_join/:user1/:user2' do
+  raise TooManyFollowers, params[:user1] unless TWIT.user(params[:user1]).followers_count.to_i <= 1000
+  raise TooManyFollowers, params[:user2] unless TWIT.user(params[:user2]).followers_count.to_i <= 1000
   @shared = TWIT.all_followers_for(params[:user1]).overlap!(TWIT.all_followers_for(params[:user2]))
   @title = "People who follow " + params[:user1] + " and " + params[:user2]
  
