@@ -3,6 +3,8 @@ require 'rubygems'
 require 'sinatra'
 require 'twitter'
 
+TWIT = Twitter::Base.new('testing42', 'testme')
+
 module Twitter
   class Base
     def all_followers_for(user, page=1)
@@ -33,8 +35,7 @@ get '/' do
   haml :index#'%h1 Hello World!'
 end
 get '/find_join/:user1/:user2' do
-  x = Twitter::Base.new('testing42', 'testme')
-  @shared = x.all_followers_for(params[:user1]).overlap!(x.all_followers_for(params[:user2]))
+  @shared = TWIT.all_followers_for(params[:user1]).overlap!(TWIT.all_followers_for(params[:user2]))
   @title = "People who follow " + params[:user1] + " and " + params[:user2]
  
   haml :find_join
@@ -43,7 +44,10 @@ end
 get '/urlify' do
   redirect "/find_join/#{params[:user1]}/#{params[:user2]}"
 end
-
+get '/about' do
+  @title = "About"
+  haml :about
+end
 
 
 
@@ -72,6 +76,8 @@ common followers
 %h1 How do I know you?
 %p
   Often, someone follows you on Twitter, and you don't know who they are or how they know you. But with this currently-unnamed app, you can enter your username and theirs, and we tell you what people follow both of you, letting you know which of your friends they know. 
+%p
+  There is a 1000 follower limit. Why? Well, we're a little jealous of popular twitterers, but mostly it's because we like to keep our servers unexploded. 
   
 %form{:action => '/urlify', :method => 'get'}
   %p
@@ -86,6 +92,14 @@ common followers
     Note:
   I know that this is really slow. It has to talk to Twitter at least twice, which is slow, and then crunch the data, which is slow. It is working, so unless it takes like a minute, have faith and don't try to reload it. You'll just lose your progress. 
 
+@@ about
+%h1 About APPNAME
+%p 
+  :markdown
+    APPNAME is written in [Sinatra](http://sintrarb.com/), a Ruby web framework.
+%p 
+  I basically wrote it for fun to solve a problem that I run into often--not knowing how someone that begins following me has found me. 
+
 @@ layout
 !!!
 %html
@@ -94,3 +108,7 @@ common followers
       = @title || "APPNAME"
   %body
     = yield
+    %hr
+    #footer
+      %a{:href=>'/'} Home
+      %a{:href=>'/about'} About
