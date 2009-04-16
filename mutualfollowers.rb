@@ -45,7 +45,7 @@ end
 
 
 get '/' do
-  @title = "appname"
+  @title = "Mutual Followers"
   haml :index#'%h1 Hello World!'
 end
 def confirm_user!(user)
@@ -136,3 +136,4 @@ common followers
     #footer
       %a{:href=>'/'} Home
       %a{:href=>'/about'} About
+      Copyright Daniel Jackoway 2009
