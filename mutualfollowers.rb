@@ -3,40 +3,9 @@ require 'rubygems'
 require 'sinatra'
 require 'twitter'
 
-TWIT = Twitter::Base.new('testing42', 'testme')
-
-module Twitter
-  class Base
-    def all_followers_for(user, page=1)
-      f = self.followers_for(user, :page => page)
-      return f if f.empty?
-      f + self.all_followers_for(user, page+1)
-    end
-  end
-end
-class Array
-  def overlap!(arr)
-    self.delete_if do |user|
-      !arr.include_user?(user.screen_name)
-      #arr.select {|u| u.screen_name==user.screen_name}.length > 0
-    end
-  end
-  def include_user?(user_name)
-    self.each do |u|
-      return true if u.screen_name == user_name
-    end
-    false
-  end
-end
+TWIT = Twitter::Base.new(Twitter::HTTPAuth.new('testing42', 'testme'))
 
 #Errors
-class TooManyFollowers < ArgumentError; end
-
-error TooManyFollowers do
-  status 406
-  haml "%p @#{request.env['sinatra.error'].message} has more than 1000 followers!"
-end
-
 class BadUser < ArgumentError; end
 
 error BadUser do
@@ -50,16 +19,13 @@ get '/' do
 end
 def confirm_user!(user)
   begin
-    raise TooManyFollowers, user unless TWIT.user(user).followers_count.to_i <= 1000
   rescue Twitter::CantConnect
     raise BadUser, user
   end
 end
 
 get '/find_join/:user1/:user2' do
-  confirm_user!(params[:user1])
-  confirm_user!(params[:user2])
-  @shared = TWIT.all_followers_for(params[:user1]).overlap!(TWIT.all_followers_for(params[:user2]))
+  @shared = TWIT.follower_ids(:screen_name => params[:user1]) & TWIT.follower_ids(:screen_name => params[:user2])
   @title = "People who follow " + params[:user1] + " and " + params[:user2]
  
   haml :find_join
@@ -91,8 +57,8 @@ __END__
     = params[:user2]
 - @shared.each do |user|
   %p
-    %a{:href => "http://twitter.com/#{user.screen_name}"}
-      = user.screen_name
+    %a{:href => "http://twitter.com/#{user}"}
+      = user
 = @shared.length
 common followers
 
@@ -100,8 +66,6 @@ common followers
 %h1 How do I know you?
 %p
   Often, someone follows you on Twitter, and you don't know who they are or how they know you. But with this currently-unnamed app, you can enter your username and theirs, and we tell you what people follow both of you, letting you know which of your friends they know. 
-%p
-  There is a 1000 follower limit. Why? Well, we're a little jealous of popular twitterers, but mostly it's because we like to keep our servers unexploded. 
   
 %form{:action => '/urlify', :method => 'get'}
   %p
