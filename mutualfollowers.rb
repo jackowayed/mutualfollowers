@@ -75,10 +75,6 @@ common followers
     %label Username 2:
     %input{:type => 'text', :name => 'user2'}
   %input{:type => 'submit', :value => 'Compare Followers'}
-%p
-  %strong
-    Note:
-  I know that this is really slow. It has to talk to Twitter at least twice, which is slow, and then crunch the data, which is slow. It is working, so unless it takes like a minute, have faith and don't try to reload it. You'll just lose your progress. 
 
 @@ about
 %h1 About APPNAME
