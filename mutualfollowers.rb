@@ -10,7 +10,7 @@ TWIT = Twitter::Base.new(Twitter::HTTPAuth.new('testing42', 'testme'))
 class BadUser < ArgumentError; end
 
 error BadUser do
-  haml "%p Twitter is complaining about @#{request.env['sinatra.error'].message}. Did you mistype the username? If that's not the case, and Twitter isn't down, this probably is a sign of the apocalypse." 
+  haml "%p Twitter is complaining about one of the users you provided. This could mean that you mistyped a username, that they protect their tweets, or that Twitter is down."
 end
 
 
