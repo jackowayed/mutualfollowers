@@ -84,6 +84,10 @@ common followers
     Mutual Followers is written in [Sinatra](http://sintrarb.com/), a Ruby web framework.
 %p 
   I basically wrote it for fun to solve a problem that I run into often--not knowing how someone that begins following me has found me. 
+:markdown
+  ## Contact
+
+  To contact me, email me at [danjdel+mf@gmail.com](mailto:danjdel+mf@gmail.com)
 
 @@ layout
 !!!
