@@ -57,7 +57,7 @@ __END__
     = params[:user2]
 - @shared.each do |user|
   %p
-    %a{:href => "http://twitter.com/#{user}"}
+    %a{:href => "http://twitter.com/users/#{user}"}
       = user
 = @shared.length
 common followers
