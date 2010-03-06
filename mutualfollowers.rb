@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'twitter'
+require 'haml'
 
 TWIT = Twitter::Base.new(Twitter::HTTPAuth.new('testing42', 'testme'))
 
