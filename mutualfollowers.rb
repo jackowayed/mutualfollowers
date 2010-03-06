@@ -26,7 +26,11 @@ def confirm_user!(user)
 end
 
 get '/find_join/:user1/:user2' do
-  @shared = TWIT.follower_ids(:screen_name => params[:user1]) & TWIT.follower_ids(:screen_name => params[:user2])
+  begin
+    @shared = TWIT.follower_ids(:screen_name => params[:user1]) & TWIT.follower_ids(:screen_name => params[:user2])
+  rescue
+    raise BadUser
+  end
   @title = "People who follow " + params[:user1] + " and " + params[:user2]
  
   haml :find_join
