@@ -18,12 +18,6 @@ get '/' do
   @title = "Mutual Followers"
   haml :index#'%h1 Hello World!'
 end
-def confirm_user!(user)
-  begin
-  rescue Twitter::CantConnect
-    raise BadUser, user
-  end
-end
 
 get '/find_join/:user1/:user2' do
   begin
