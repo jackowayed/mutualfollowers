@@ -78,10 +78,10 @@ common followers
   %input{:type => 'submit', :value => 'Compare Followers'}
 
 @@ about
-%h1 About APPNAME
+%h1 About Mutual Followers
 %p 
   :markdown
-    APPNAME is written in [Sinatra](http://sintrarb.com/), a Ruby web framework.
+    Mutual Followers is written in [Sinatra](http://sintrarb.com/), a Ruby web framework.
 %p 
   I basically wrote it for fun to solve a problem that I run into often--not knowing how someone that begins following me has found me. 
 
@@ -90,7 +90,7 @@ common followers
 %html
   %head
     %title
-      = @title || "APPNAME"
+      = @title || "Mutual Followers"
   %body
     = yield
     %hr
