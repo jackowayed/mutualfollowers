@@ -10,7 +10,7 @@ TWIT = Twitter::Base.new(Twitter::HTTPAuth.new('testing42', 'testme'))
 class BadUser < ArgumentError; end
 
 error BadUser do
-  haml "%p Twitter is complaining about one of the users you provided. This could mean that you mistyped a username, that they protect their tweets, or that Twitter is down."
+  haml "%p Twitter is complaining about one of the users you provided. This could mean that you mistyped a username, that they protect their tweets, or that Twitter is down. This also can occur when working with users with extremely high numbers of followers."
 end
 
 
